@@ -1,6 +1,7 @@
 package com.ecom.app.user.controller;
 
-import com.ecom.app.user.entity.User;
+import com.ecom.app.user.dto.UserRequest;
+import com.ecom.app.user.dto.UserResponse;
 import com.ecom.app.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,17 +20,17 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<String> createUser(
-            @RequestBody User user
-    )
+            @RequestBody UserRequest userRequest
+            )
     {
-        userService.adduser(user);
+        userService.adduser(userRequest);
 
         return ResponseEntity.ok(
                 "User Added Successfully"
         );
     }
     @GetMapping
-    public ResponseEntity<List<User>> getAllUser()
+    public ResponseEntity<List<UserResponse>> getAllUser()
     {
         return new ResponseEntity<>(
                 userService.fetchAllUser(),
@@ -38,7 +39,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUser(
+    public ResponseEntity<UserResponse> getUser(
             @PathVariable Long id
     )
     {
@@ -57,10 +58,10 @@ public class UserController {
     @PutMapping("/{id}")
     public ResponseEntity<String> updateUser(
             @PathVariable Long id,
-            @RequestBody User updatedUser
+            @RequestBody UserRequest updatedUserRequest
     )
     {
-        boolean updated = userService.updateUser(id, updatedUser);
+        boolean updated = userService.updateUser(id, updatedUserRequest);
 
         if(updated){
             return ResponseEntity.ok(
